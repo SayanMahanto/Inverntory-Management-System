@@ -4,9 +4,6 @@ import express from "express";
 // importing Auth controller functions
 import { registerUser, loginUser } from "../controller/authController.js";
 
-// importing auth middleware
-import { verifyToken } from "../middleware/authMiddleware.js";
-
 // router configuration
 const router = express.Router();
 
