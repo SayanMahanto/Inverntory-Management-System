@@ -30,9 +30,58 @@ export const createItem = async (req, res) => {
 
 // GET ITEMS
 export const getAllItems = async (req, res) => {
+  const {
+    search,
+    category,
+    minPrice,
+    maxPrice,
+    maxQty,
+    minQty,
+    page = 1,
+    limit = 10,
+    sort = "createdAt",
+    order = "desc",
+  } = req.query;
+
+  const query = {};
+
+  if (search) {
+    query.name = { $regex: search, $options: "i" };
+  }
+
+  if (category) {
+    query.category = { $regex: category, $options: "i" };
+  }
+
+  if (minPrice || maxPrice) {
+    query.price = {};
+    if (minPrice) query.price.$gte = Number(minPrice);
+    if (maxPrice) query.price.$lte = Number(maxPrice);
+  }
+
+  if (minQty || maxQty) {
+    query.quantity = {};
+    if (minQty) query.quantity.$gte = Number(minQty);
+    if (maxQty) query.quantity.$lte = Number(maxQty);
+  }
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const sortOptions = { [sort]: order === "asc" ? 1 : -1 };
+
   try {
-    const items = await Inventory.find().populate("createdBy", "name email");
-    res.status(200).json({ items });
+    const items = await Inventory.find(query)
+      .populate("createdBy", "name email")
+      .sort(sortOptions)
+      .skip(skip)
+      .limit(Number(limit));
+
+    const total = await Inventory.countDocuments(query);
+    res.status(200).json({
+      totalItems: total,
+      currentPage: Number(page),
+      totalPages: Math.ceil(total / limit),
+      items,
+    });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
