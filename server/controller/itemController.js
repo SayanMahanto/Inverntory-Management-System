@@ -24,6 +24,16 @@ export const createItem = async (req, res) => {
 
     return res.status(200).json({ message: "Item created successfully", item });
   } catch (err) {
-    return res.status(401).json({ message: err.message });
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// GET ITEMS
+export const getAllItems = async (req, res) => {
+  try {
+    const items = await Inventory.find().populate("createdBy", "name email");
+    res.status(200).json({ items });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
   }
 };

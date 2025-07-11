@@ -5,7 +5,7 @@ import express from "express";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
 // importing controllers
-import { createItem } from "./../controller/itemController.js";
+import { createItem, getAllItems } from "./../controller/itemController.js";
 
 // router configuration
 const router = express.Router();
@@ -20,5 +20,6 @@ router.get("/test", verifyToken, (req, res) => {
 
 // routes
 router.post("/", verifyToken, createItem);
+router.get("/", verifyToken, getAllItems);
 
 export default router;
