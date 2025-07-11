@@ -27,9 +27,15 @@ export const registerUser = async (req, res) => {
       role,
     });
 
-    return res
-      .status(200)
-      .json({ user: user, message: "User created successfully." });
+    return res.status(200).json({
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+      message: "User created successfully.",
+    });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
