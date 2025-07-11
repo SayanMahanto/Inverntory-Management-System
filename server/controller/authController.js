@@ -9,7 +9,6 @@ import User from "../models/User.js";
 // defining JWT secret key from .env
 dotenv.config({ quiet: true });
 const JWT_SECRET = process.env.JWT_SECRET;
-console.log("JWT_SECRET:", JWT_SECRET);
 
 // REGISTER
 export const registerUser = async (req, res) => {
