@@ -1,4 +1,4 @@
-// importing all packages
+// importing all module packages
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import express from "express";
