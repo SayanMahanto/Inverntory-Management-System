@@ -7,6 +7,7 @@ import chalk from "chalk";
 
 // importing router
 import authRoutes from "./routes/authRoutes.js";
+import itemRoutes from "./routes/itemRoutes.js";
 
 // chalks colors
 const errorColor = chalk.bold.red;
@@ -26,6 +27,7 @@ app.get("/", (req, res) => res.send("Inventory Management API is running..."));
 
 // defining routes
 app.use("/api/auth", authRoutes);
+app.use("/api/items", itemRoutes);
 
 // connection variables
 const PORT = process.env.PORT || 5000;

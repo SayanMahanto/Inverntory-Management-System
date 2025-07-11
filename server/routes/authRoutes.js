@@ -19,13 +19,5 @@ router.get("/test", (req, res) => {
   res.send("Auth route is working");
 });
 
-// protected routes
-router.get("/protected", verifyToken, (req, res) => [
-  res.json({
-    message: "You have accessed a protected route",
-    user: req.user,
-  }),
-]);
-
 // exporting router
 export default router;
