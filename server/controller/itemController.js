@@ -37,3 +37,52 @@ export const getAllItems = async (req, res) => {
     return res.status(500).json({ message: err.message });
   }
 };
+
+// UPDATE ITEMS
+export const updateItem = async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Access denied. Admins only" });
+  }
+
+  try {
+    const updatedItem = await Inventory.findByIdAndUpdate(id, req.body, {
+      new: true,
+      runValidators: true,
+    });
+
+    if (!updatedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    return res
+      .status(200)
+      .json({ message: "Item updated successfully.", item: updatedItem });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};
+
+// DELETE ITEM
+export const deleteItem = async (req, res) => {
+  const { id } = req.params;
+  const user = req.user;
+
+  if (user.role !== "admin") {
+    return res.status(403).json({ message: "Access denied. Admins only" });
+  }
+
+  try {
+    const deletedItem = await Inventory.findByIdAndDelete(id);
+
+    if (!deletedItem) {
+      return res.status(404).json({ message: "Item not found" });
+    }
+
+    return res.status(200).json({ message: "Item deleted successfully." });
+  } catch (err) {
+    return res.status(500).json({ message: err.message });
+  }
+};

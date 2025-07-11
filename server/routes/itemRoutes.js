@@ -5,7 +5,12 @@ import express from "express";
 import { verifyToken } from "../middleware/authMiddleware.js";
 
 // importing controllers
-import { createItem, getAllItems } from "./../controller/itemController.js";
+import {
+  createItem,
+  getAllItems,
+  updateItem,
+  deleteItem,
+} from "./../controller/itemController.js";
 
 // router configuration
 const router = express.Router();
@@ -19,7 +24,9 @@ router.get("/test", verifyToken, (req, res) => {
 });
 
 // routes
-router.post("/", verifyToken, createItem);
-router.get("/", verifyToken, getAllItems);
+router.post("/", verifyToken, createItem); // admin only
+router.get("/", verifyToken, getAllItems); // any logged in user
+router.put("/:id", verifyToken, updateItem); // admin only
+router.delete("/:id", verifyToken, deleteItem); // admin only
 
 export default router;
