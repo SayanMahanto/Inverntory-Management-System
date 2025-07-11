@@ -4,15 +4,28 @@ import express from "express";
 // importing Auth controller functions
 import { registerUser, loginUser } from "../controller/authController.js";
 
+// importing auth middleware
+import { verifyToken } from "../middleware/authMiddleware.js";
+
 // router configuration
 const router = express.Router();
 
 // routes
 router.post("/register", registerUser);
 router.post("/login", loginUser);
+
+// testing routes
 router.get("/test", (req, res) => {
   res.send("Auth route is working");
 });
+
+// protected routes
+router.get("/protected", verifyToken, (req, res) => [
+  res.json({
+    message: "You have accessed a protected route",
+    user: req.user,
+  }),
+]);
 
 // exporting router
 export default router;
