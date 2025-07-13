@@ -18,6 +18,11 @@ const Dashboard = () => {
     navigate("/admin");
   };
 
+  const handleRegister = (e) => {
+    e.preventDefault();
+    navigate("/register");
+  };
+
   return (
     <div style={{ padding: "20px" }}>
       <h2>Welcome, {user?.name} 👋</h2>
@@ -52,6 +57,21 @@ const Dashboard = () => {
             }}
           >
             Admin Dashboard
+          </button>
+          <br />
+          <br />
+          <button
+            onClick={handleRegister}
+            style={{
+              padding: "10px 20px",
+              background: "#3ce76dff",
+              color: "white",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+            }}
+          >
+            Resgiter New User
           </button>
         </>
       )}
