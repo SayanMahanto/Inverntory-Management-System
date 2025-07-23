@@ -228,304 +228,354 @@ const AdminDashboard = () => {
     doc.save("inventory_items.pdf");
   };
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Admin Dashboard</h2>
-      <p>Welcome, {user?.name} 👑</p>
-
-      {error && <p style={{ color: "red" }}>{error}</p>}
-
-      <hr />
-
-      <h3>Search / Filter / Sort</h3>
-      <div style={{ marginBottom: "20px" }}>
-        <input
-          type="text"
-          name="search"
-          placeholder="Search name..."
-          value={filters.search}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={filters.category}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="number"
-          name="minPrice"
-          placeholder="Min Price"
-          value={filters.minPrice}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="number"
-          name="maxPrice"
-          placeholder="Max Price"
-          value={filters.maxPrice}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="number"
-          name="minQty"
-          placeholder="Min Qty"
-          value={filters.minQty}
-          onChange={handleFilterChange}
-        />
-        <input
-          type="number"
-          name="maxQty"
-          placeholder="Max Qty"
-          value={filters.maxQty}
-          onChange={handleFilterChange}
-        />
-        <select name="sort" value={filters.sort} onChange={handleFilterChange}>
-          <option value="createdAt">Newest</option>
-          <option value="name">Name</option>
-          <option value="price">Price</option>
-          <option value="quantity">Quantity</option>
-        </select>
-        <select
-          name="order"
-          value={filters.order}
-          onChange={handleFilterChange}
-        >
-          <option value="desc">Descending</option>
-          <option value="asc">Ascending</option>
-        </select>
-        <button onClick={() => fetchItems()}>Apply</button>
-        <br />
-        <br />
-        <div
-          style={{
-            marginBottom: "12px",
-            display: "flex",
-            gap: "10px",
-            flexWrap: "wrap",
-          }}
-        >
-          <button onClick={handleExportCSV}>⬇️ Export CSV</button>
-          <button onClick={exportToPDF}>📄 Export PDF</button>
+    <div className="min-h-screen bg-gray-900 text-white p-4 sm:p-6 md:p-8">
+      {" "}
+      <div className="bg-gray-800 p-5 rounded-lg shadow-lg mb-6 text-center max-w-2xl mx-auto md:max-w-3xl lg:max-w-4xl">
+        {" "}
+        <h2 className="text-3xl font-bold mb-2">Admin Dashboard</h2>
+        <p className="text-lg text-gray-300">Welcome, {user?.name} 👑</p>
+        {error && <p className="text-red-500 mt-4">{error}</p>}
+      </div>
+      <hr className="border-gray-700 my-6 max-w-2xl mx-auto md:max-w-3xl lg:max-w-4xl" />{" "}
+      <div className="bg-gray-800 p-5 rounded-lg shadow-lg mb-6 max-w-2xl mx-auto md:max-w-3xl lg:max-w-4xl">
+        {" "}
+        <h3 className="text-2xl font-semibold mb-4 text-white">
+          Search / Filter / Sort
+        </h3>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 mb-4">
+          <input
+            type="text"
+            name="search"
+            placeholder="Search name..."
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.search}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Category"
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.category}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="number"
+            name="minPrice"
+            placeholder="Min Price"
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.minPrice}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="number"
+            name="maxPrice"
+            placeholder="Max Price"
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.maxPrice}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="number"
+            name="minQty"
+            placeholder="Min Qty"
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.minQty}
+            onChange={handleFilterChange}
+          />
+          <input
+            type="number"
+            name="maxQty"
+            placeholder="Max Qty"
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={filters.maxQty}
+            onChange={handleFilterChange}
+          />
+          <select
+            name="sort"
+            value={filters.sort}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+          >
+            <option value="createdAt">Newest</option>
+            <option value="name">Name</option>
+            <option value="price">Price</option>
+            <option value="quantity">Quantity</option>
+          </select>
+          <select
+            name="order"
+            value={filters.order}
+            onChange={handleFilterChange}
+            className="w-full px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+          >
+            <option value="desc">Descending</option>
+            <option value="asc">Ascending</option>
+          </select>
+        </div>
+        <div className="flex flex-wrap gap-3 sm:gap-4 mb-4 justify-center">
+          {" "}
+          <button
+            onClick={() => fetchItems()}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded focus:outline-none focus:shadow-outline flex-grow text-sm md:flex-grow-0"
+          >
+            Apply Filters
+          </button>
+          <button
+            onClick={handleExportCSV}
+            className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded focus:outline-none focus:shadow-outline flex-grow text-sm md:flex-grow-0"
+          >
+            ⬇️ Export CSV
+          </button>
+          <button
+            onClick={exportToPDF}
+            className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded focus:outline-none focus:shadow-outline flex-grow text-sm md:flex-grow-0"
+          >
+            📄 Export PDF
+          </button>
         </div>
       </div>
-
-      <h3>All Items</h3>
-      {loading ? (
-        <table border="1" cellPadding="8" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Created By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {Array.from({ length: 5 }).map((_, i) => (
-              <tr key={i}>
-                <td>
-                  <Skeleton width={100} />
-                </td>
-                <td>
-                  <Skeleton width={100} />
-                </td>
-                <td>
-                  <Skeleton width={60} />
-                </td>
-                <td>
-                  <Skeleton width={80} />
-                </td>
-                <td>
-                  <Skeleton width={100} />
-                </td>
-                <td>
-                  <Skeleton width={120} />
-                </td>
+      <div className="bg-gray-800 p-5 rounded-lg shadow-lg mb-6 max-w-2xl mx-auto md:max-w-3xl lg:max-w-4xl overflow-x-auto">
+        <h3 className="text-2xl font-semibold mb-4 text-white">All Items</h3>
+        {loading ? (
+          <table className="w-full text-left table-auto border-collapse min-w-[600px]">
+            {" "}
+            <thead>
+              <tr className="bg-gray-700">
+                <th className="p-3 border-b border-gray-600">Name</th>
+                <th className="p-3 border-b border-gray-600">Category</th>
+                <th className="p-3 border-b border-gray-600">Qty</th>
+                <th className="p-3 border-b border-gray-600">Price</th>
+                <th className="p-3 border-b border-gray-600">Created By</th>
+                <th className="p-3 border-b border-gray-600">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      ) : (
-        <table border="1" cellPadding="8" cellSpacing="0">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Qty</th>
-              <th>Price</th>
-              <th>Created By</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {items.length > 0 ? (
-              items.map((item) => (
-                <tr key={item._id}>
-                  {editingItemId === item._id ? (
-                    <>
-                      <td>
-                        <input
-                          type="text"
-                          name="name"
-                          value={editForm.name}
-                          onChange={handleEditChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          name="category"
-                          value={editForm.category}
-                          onChange={handleEditChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          name="quantity"
-                          value={editForm.quantity}
-                          onChange={handleEditChange}
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          name="price"
-                          value={editForm.price}
-                          onChange={handleEditChange}
-                        />
-                      </td>
-                      <td>{item.createdBy?.name}</td>
-                      <td>
-                        <button onClick={() => handleUpdate(item._id)}>
-                          💾 Save
-                        </button>
-                        <button onClick={() => setEditingItemId(null)}>
-                          ❌ Cancel
-                        </button>
-                      </td>
-                    </>
-                  ) : (
-                    <>
-                      <td>{item.name}</td>
-                      <td>{item.category}</td>
-                      <td>{item.quantity}</td>
-                      <td>₹{item.price}</td>
-                      <td>{item.createdBy?.name}</td>
-                      <td>
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "6px",
-                            flexWrap: "wrap",
-                          }}
-                        >
-                          <button onClick={() => startEditing(item)}>
-                            ✏️ Edit
-                          </button>
-                          <button onClick={() => handleDelete(item._id)}>
-                            🗑 Delete
-                          </button>
-                        </div>
-                      </td>
-                    </>
-                  )}
+            </thead>
+            <tbody>
+              {Array.from({ length: 5 }).map((_, i) => (
+                <tr
+                  key={i}
+                  className="border-b border-gray-700 hover:bg-gray-700"
+                >
+                  <td className="p-3">
+                    <Skeleton width={100} />
+                  </td>
+                  <td className="p-3">
+                    <Skeleton width={100} />
+                  </td>
+                  <td className="p-3">
+                    <Skeleton width={60} />
+                  </td>
+                  <td className="p-3">
+                    <Skeleton width={80} />
+                  </td>
+                  <td className="p-3">
+                    <Skeleton width={100} />
+                  </td>
+                  <td className="p-3">
+                    <Skeleton width={120} />
+                  </td>
                 </tr>
-              ))
-            ) : (
-              <tr>
-                <td colSpan="6">No items found</td>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <table className="w-full text-left table-auto border-collapse min-w-[600px]">
+            {" "}
+            <thead>
+              <tr className="bg-gray-700">
+                <th className="p-3 border-b border-gray-600">Name</th>
+                <th className="p-3 border-b border-gray-600">Category</th>
+                <th className="p-3 border-b border-gray-600">Qty</th>
+                <th className="p-3 border-b border-gray-600">Price</th>
+                <th className="p-3 border-b border-gray-600">Created By</th>
+                <th className="p-3 border-b border-gray-600">Actions</th>
               </tr>
-            )}
-          </tbody>
-        </table>
-      )}
+            </thead>
+            <tbody>
+              {items.length > 0 ? (
+                items.map((item) => (
+                  <tr
+                    key={item._id}
+                    className="border-b border-gray-700 hover:bg-gray-700"
+                  >
+                    {editingItemId === item._id ? (
+                      <>
+                        <td className="p-3">
+                          <input
+                            type="text"
+                            name="name"
+                            value={editForm.name}
+                            onChange={handleEditChange}
+                            className="w-full p-2 rounded bg-gray-600 border border-gray-500 text-white text-sm"
+                          />
+                        </td>
+                        <td className="p-3">
+                          <input
+                            type="text"
+                            name="category"
+                            value={editForm.category}
+                            onChange={handleEditChange}
+                            className="w-full p-2 rounded bg-gray-600 border border-gray-500 text-white text-sm"
+                          />
+                        </td>
+                        <td className="p-3">
+                          <input
+                            type="number"
+                            name="quantity"
+                            value={editForm.quantity}
+                            onChange={handleEditChange}
+                            className="w-full p-2 rounded bg-gray-600 border border-gray-500 text-white text-sm"
+                          />
+                        </td>
+                        <td className="p-3">
+                          <input
+                            type="number"
+                            name="price"
+                            value={editForm.price}
+                            onChange={handleEditChange}
+                            className="w-full p-2 rounded bg-gray-600 border border-gray-500 text-white text-sm"
+                          />
+                        </td>
+                        <td className="p-3">{item.createdBy?.name}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2 flex-wrap">
+                            <button
+                              onClick={() => handleUpdate(item._id)}
+                              className="px-3 py-1 bg-green-600 hover:bg-green-700 text-white rounded text-sm focus:outline-none focus:shadow-outline"
+                            >
+                              💾 Save
+                            </button>
+                            <button
+                              onClick={() => setEditingItemId(null)}
+                              className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm focus:outline-none focus:shadow-outline"
+                            >
+                              ❌ Cancel
+                            </button>
+                          </div>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="p-3">{item.name}</td>
+                        <td className="p-3">{item.category}</td>
+                        <td className="p-3">{item.quantity}</td>
+                        <td className="p-3">₹{item.price}</td>
+                        <td className="p-3">{item.createdBy?.name}</td>
+                        <td className="p-3">
+                          <div className="flex gap-2 flex-wrap">
+                            <button
+                              onClick={() => startEditing(item)}
+                              className="px-3 py-1 bg-yellow-600 hover:bg-yellow-700 text-white rounded text-sm focus:outline-none focus:shadow-outline"
+                            >
+                              ✏️ Edit
+                            </button>
+                            <button
+                              onClick={() => handleDelete(item._id)}
+                              className="px-3 py-1 bg-red-600 hover:bg-red-700 text-white rounded text-sm focus:outline-none focus:shadow-outline"
+                            >
+                              🗑️ Delete
+                            </button>
+                          </div>
+                        </td>
+                      </>
+                    )}
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6" className="p-3 text-center text-gray-400">
+                    No items found
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        )}
 
-      <div style={{ marginTop: "20px" }} className="pagination">
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
+        <div className="mt-6 flex flex-col sm:flex-row justify-center items-center space-y-3 sm:space-y-0 sm:space-x-4">
+          {" "}
+          <button
+            onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+            disabled={page === 1}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed text-sm w-full sm:w-auto"
+          >
+            ⬅️ Prev
+          </button>
+          <span className="text-lg text-gray-300">
+            Page {page} of {totalPages}
+          </span>
+          <button
+            onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+            disabled={page === totalPages}
+            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded disabled:opacity-50 disabled:cursor-not-allowed text-sm w-full sm:w-auto"
+          >
+            Next ➡️
+          </button>
+        </div>
+      </div>
+      <div className="bg-gray-800 p-5 rounded-lg shadow-lg mb-6 max-w-2xl mx-auto md:max-w-3xl lg:max-w-4xl">
+        {" "}
+        <h3 className="text-2xl font-semibold mb-4 text-white">Add New Item</h3>
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col md:flex-row md:flex-wrap gap-3 sm:gap-4 items-center"
         >
-          ⬅️ Prev
-        </button>
-        <span style={{ margin: "0 10px" }}>
-          Page {page} of {totalPages}
-        </span>
+          <input
+            type="text"
+            name="name"
+            placeholder="Item name"
+            className="w-full md:w-auto md:flex-1 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={formData.name}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="text"
+            name="category"
+            placeholder="Category"
+            className="w-full md:w-auto md:flex-1 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={formData.category}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="quantity"
+            placeholder="Quantity"
+            className="w-full md:w-auto md:flex-1 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={formData.quantity}
+            onChange={handleChange}
+            required
+          />
+          <input
+            type="number"
+            name="price"
+            placeholder="Price"
+            className="w-full md:w-auto md:flex-1 px-3 py-2 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white text-sm"
+            value={formData.price}
+            onChange={handleChange}
+            required
+          />
+          <button
+            type="submit"
+            className="w-full md:w-auto px-5 py-2 bg-green-600 hover:bg-green-700 text-white font-bold rounded focus:outline-none focus:shadow-outline text-sm"
+          >
+            Add Item
+          </button>
+        </form>
+      </div>
+      <div className="mt-8 text-center max-w-md mx-auto">
         <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page === totalPages}
+          onClick={handleGoBack}
+          className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline"
         >
-          Next ➡️
+          Go Back
         </button>
       </div>
-
-      <h3>Add New Item</h3>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          name="name"
-          placeholder="Item name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="text"
-          name="category"
-          placeholder="Category"
-          value={formData.category}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="quantity"
-          placeholder="Quantity"
-          value={formData.quantity}
-          onChange={handleChange}
-          required
-        />
-        <input
-          type="number"
-          name="price"
-          placeholder="Price"
-          value={formData.price}
-          onChange={handleChange}
-          required
-        />
-        <button type="submit">Add Item</button>
-      </form>
-
-      <style>
-        {`
-          @media (max-width: 600px) {
-            input, select, button {
-              width: 100%;
-              margin-bottom: 8px;
-            }
-            form, div[style*="marginBottom"] {
-              display: flex;
-              flex-direction: column;
-              gap: 10px;
-            }
-            table {
-              display: block;
-              overflow-x: auto;
-              white-space: nowrap;
-            }
-            .pagination {
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              gap: 8px;
-            }
-          }
-        `}
-      </style>
     </div>
   );
 };

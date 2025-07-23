@@ -24,57 +24,36 @@ const Dashboard = () => {
   };
 
   return (
-    <div style={{ padding: "20px" }}>
-      <h2>Welcome, {user?.name} 👋</h2>
-      <p>Role: {user?.role}</p>
+    <div className="min-h-screen bg-gray-900 text-white p-6 flex flex-col items-center justify-center">
+      <div className="w-full max-w-md bg-gray-800 p-8 rounded-lg shadow-lg text-center">
+        <h2 className="text-3xl font-bold mb-4">Welcome, {user?.name} 👋</h2>
+        <p className="text-lg text-gray-300 mb-6">Role: {user?.role}</p>
 
-      <button
-        onClick={handleLogout}
-        style={{
-          padding: "10px 20px",
-          background: "#e74c3c",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-      >
-        Logout
-      </button>
-      {admin && (
-        <>
-          <br />
-          <br />
-          <button
-            onClick={handleAdmin}
-            style={{
-              padding: "10px 20px",
-              background: "#533ce7ff",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Admin Dashboard
-          </button>
-          <br />
-          <br />
-          <button
-            onClick={handleRegister}
-            style={{
-              padding: "10px 20px",
-              background: "#3ce76dff",
-              color: "white",
-              border: "none",
-              borderRadius: "5px",
-              cursor: "pointer",
-            }}
-          >
-            Resgiter New User
-          </button>
-        </>
-      )}
+        <button
+          onClick={handleLogout}
+          className="w-full bg-red-600 hover:bg-red-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline"
+        >
+          Logout
+        </button>
+
+        {admin && (
+          <div className="mt-6 space-y-4">
+            {" "}
+            <button
+              onClick={handleAdmin}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline"
+            >
+              Admin Dashboard
+            </button>
+            <button
+              onClick={handleRegister}
+              className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline"
+            >
+              Register New User
+            </button>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

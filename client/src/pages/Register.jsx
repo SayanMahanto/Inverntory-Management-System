@@ -48,6 +48,10 @@ const Register = () => {
     }
   };
 
+  const handleGoBack = () => {
+    window.history.back();
+  };
+
   if (user.role !== "admin") {
     navigate("/dashboard");
   }
@@ -56,46 +60,71 @@ const Register = () => {
   }
 
   return (
-    <div style={{ maxWidth: "400px", margin: "40px auto" }}>
-      <h2>Register New User</h2>
-      <form onSubmit={handleSubmit}>
+    <div style={{ maxWidth: "400px", margin: "40px auto" }} className="p-4">
+      <h2 className="text-center text-3xl font-bold mb-8 text-white">
+        Register New User
+      </h2>
+
+      <form
+        onSubmit={handleSubmit}
+        className="flex flex-col items-center space-y-6"
+      >
         <input
           type="text"
           name="name"
           placeholder="Full Name"
+          className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white"
           value={formData.name}
           onChange={handleChange}
           required
         />
-        <br />
+
         <input
           type="email"
           name="email"
           placeholder="Email"
+          className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white"
           value={formData.email}
           onChange={handleChange}
           required
         />
-        <br />
+
         <input
           type="password"
           name="password"
           placeholder="Password"
+          className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white"
           value={formData.password}
           onChange={handleChange}
           required
         />
-        <br />
-        <select name="role" value={formData.role} onChange={handleChange}>
+
+        <select
+          name="role"
+          value={formData.role}
+          onChange={handleChange}
+          className="w-full p-3 rounded bg-gray-700 border border-gray-600 focus:outline-none focus:border-blue-500 text-white"
+        >
           <option value="staff">Staff</option>
           <option value="admin">Admin</option>
         </select>
-        <br />
-        <button type="submit">Register</button>
-        <br />
-        {error && <p style={{ color: "red" }}>{error}</p>}
-        {success && <p style={{ color: "green" }}>{success}</p>}
+
+        <button
+          type="submit"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline mt-4"
+        >
+          Register
+        </button>
+
+        {error && <p className="text-red-500 mt-2">{error}</p>}
+        {success && <p className="text-green-500 mt-2">{success}</p>}
       </form>
+      <button
+        onClick={handleGoBack}
+        className="w-full bg-gray-600 hover:bg-gray-700 text-white font-bold py-3 rounded focus:outline-none focus:shadow-outline mt-4"
+      >
+        Go Back
+      </button>
     </div>
   );
 };
