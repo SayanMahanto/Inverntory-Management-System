@@ -20,13 +20,12 @@ dotenv.config({ quiet: true });
 // app/express configuration
 const app = express();
 app.use(express.json());
-app.use(cors({ origin: true, credentials: true }));
 
 app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://inverntory-management-system-pks4.onrender.com",
+      "https://inventory-management-system-pks4.onrender.com",
     ],
     credentials: true,
   })
