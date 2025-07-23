@@ -99,7 +99,7 @@ const AdminDashboard = () => {
     setError("");
 
     try {
-      const res = await fetch("http://localhost:5000/api/items", {
+      const res = await fetch(`${import.meta.env.VITE_API_BASE_URL}/items`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -143,18 +143,21 @@ const AdminDashboard = () => {
 
   const handleUpdate = async (id) => {
     try {
-      const res = await fetch(`http://localhost:5000/api/items/${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          ...editForm,
-          quantity: Number(editForm.quantity),
-          price: Number(editForm.price),
-        }),
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/items/${id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            ...editForm,
+            quantity: Number(editForm.quantity),
+            price: Number(editForm.price),
+          }),
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Update failed");
@@ -171,12 +174,15 @@ const AdminDashboard = () => {
     if (!window.confirm("Are you sure you want to delete this item?")) return;
 
     try {
-      const res = await fetch(`http://localhost:5000/api/items/${id}`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/items/${id}`,
+        {
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       const data = await res.json();
       if (!res.ok) throw new Error(data.message || "Delete failed");
