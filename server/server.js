@@ -22,6 +22,16 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+app.use(
+  cors({
+    origin: [
+      "http://localhost:5173",
+      "https://inverntory-management-system-pks4.onrender.com",
+    ],
+    credentials: true,
+  })
+);
+
 //default route
 app.get("/", (req, res) => res.send("Inventory Management API is running..."));
 
