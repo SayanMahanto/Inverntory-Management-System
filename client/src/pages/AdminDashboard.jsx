@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import Skeleton from "react-loading-skeleton";
+import "react-loading-skeleton/dist/skeleton.css";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
 
 const AdminDashboard = () => {
   const { user, token } = useAuth();
@@ -22,6 +27,7 @@ const AdminDashboard = () => {
     quantity: "",
     price: "",
   });
+
   const [filters, setFilters] = useState({
     search: "",
     category: "",
@@ -33,6 +39,9 @@ const AdminDashboard = () => {
     order: "desc",
   });
 
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+
   useEffect(() => {
     if (!user || user.role !== "admin") {
       navigate("/login");
@@ -40,7 +49,12 @@ const AdminDashboard = () => {
   }, [user, navigate]);
 
   const fetchItems = async () => {
-    const queryParams = new URLSearchParams(filters).toString();
+    const queryParams = new URLSearchParams({
+      ...filters,
+      page,
+      limit: 5,
+    }).toString();
+
     try {
       const res = await fetch(
         `http://localhost:5000/api/items?${queryParams}`,
@@ -53,6 +67,7 @@ const AdminDashboard = () => {
 
       const data = await res.json();
       setItems(data.items);
+      setTotalPages(data.totalPages || 1);
       setLoading(false);
     } catch (err) {
       console.error(err.message);
@@ -62,13 +77,14 @@ const AdminDashboard = () => {
 
   useEffect(() => {
     fetchItems();
-  }, [token]);
+  }, [token, page]);
 
   const handleFilterChange = (e) => {
     setFilters((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
     }));
+    setPage(1);
   };
 
   const handleChange = (e) => {
@@ -98,14 +114,13 @@ const AdminDashboard = () => {
 
       const data = await res.json();
 
-      if (!res.ok) {
-        throw new Error(data.message || "Failed to create item");
-      }
+      if (!res.ok) throw new Error(data.message || "Failed to create item");
 
       setFormData({ name: "", category: "", quantity: "", price: "" });
+      toast.success("Item added successfully");
       fetchItems();
     } catch (err) {
-      setError(err.message);
+      toast.error(err.message || "Something went wrong");
     }
   };
 
@@ -142,15 +157,13 @@ const AdminDashboard = () => {
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Update failed");
 
-      if (!res.ok) {
-        throw new Error(data.message || "Update failed");
-      }
-
+      toast.success("Item updated");
       setEditingItemId(null);
       fetchItems();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message || "Something went wrong");
     }
   };
 
@@ -166,15 +179,53 @@ const AdminDashboard = () => {
       });
 
       const data = await res.json();
+      if (!res.ok) throw new Error(data.message || "Delete failed");
 
-      if (!res.ok) {
-        throw new Error(data.message || "Delete failed");
-      }
-
+      toast.success("Item deleted");
       fetchItems();
     } catch (err) {
-      alert(err.message);
+      toast.error(err.message || "Something went wrong");
     }
+  };
+
+  const handleExportCSV = () => {
+    const csvContent =
+      "data:text/csv;charset=utf-8," +
+      ["Name,Category,Quantity,Price,CreatedBy"]
+        .concat(
+          items.map(
+            (item) =>
+              `${item.name},${item.category},${item.quantity},${item.price},${item.createdBy?.name}`
+          )
+        )
+        .join("\n");
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "inventory.csv");
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
+  const exportToPDF = () => {
+    const doc = new jsPDF();
+
+    autoTable(doc, {
+      head: [["Name", "Category", "Qty", "Price", "Created By"]],
+      body: items.map((item) => [
+        item.name,
+        item.category,
+        item.quantity,
+        item.price,
+        item.createdBy?.name || "N/A",
+      ]),
+      startY: 20,
+    });
+
+    doc.text("Inventory Items", 14, 15);
+    doc.save("inventory_items.pdf");
   };
 
   return (
@@ -245,11 +296,59 @@ const AdminDashboard = () => {
           <option value="asc">Ascending</option>
         </select>
         <button onClick={() => fetchItems()}>Apply</button>
+        <br />
+        <br />
+        <div
+          style={{
+            marginBottom: "12px",
+            display: "flex",
+            gap: "10px",
+            flexWrap: "wrap",
+          }}
+        >
+          <button onClick={handleExportCSV}>⬇️ Export CSV</button>
+          <button onClick={exportToPDF}>📄 Export PDF</button>
+        </div>
       </div>
 
       <h3>All Items</h3>
       {loading ? (
-        <p>Loading...</p>
+        <table border="1" cellPadding="8" cellSpacing="0">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Category</th>
+              <th>Qty</th>
+              <th>Price</th>
+              <th>Created By</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.from({ length: 5 }).map((_, i) => (
+              <tr key={i}>
+                <td>
+                  <Skeleton width={100} />
+                </td>
+                <td>
+                  <Skeleton width={100} />
+                </td>
+                <td>
+                  <Skeleton width={60} />
+                </td>
+                <td>
+                  <Skeleton width={80} />
+                </td>
+                <td>
+                  <Skeleton width={100} />
+                </td>
+                <td>
+                  <Skeleton width={120} />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       ) : (
         <table border="1" cellPadding="8" cellSpacing="0">
           <thead>
@@ -318,12 +417,20 @@ const AdminDashboard = () => {
                       <td>₹{item.price}</td>
                       <td>{item.createdBy?.name}</td>
                       <td>
-                        <button onClick={() => startEditing(item)}>
-                          ✏️ Edit
-                        </button>
-                        <button onClick={() => handleDelete(item._id)}>
-                          🗑 Delete
-                        </button>
+                        <div
+                          style={{
+                            display: "flex",
+                            gap: "6px",
+                            flexWrap: "wrap",
+                          }}
+                        >
+                          <button onClick={() => startEditing(item)}>
+                            ✏️ Edit
+                          </button>
+                          <button onClick={() => handleDelete(item._id)}>
+                            🗑 Delete
+                          </button>
+                        </div>
                       </td>
                     </>
                   )}
@@ -337,6 +444,25 @@ const AdminDashboard = () => {
           </tbody>
         </table>
       )}
+
+      <div style={{ marginTop: "20px" }} className="pagination">
+        <button
+          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
+          disabled={page === 1}
+        >
+          ⬅️ Prev
+        </button>
+        <span style={{ margin: "0 10px" }}>
+          Page {page} of {totalPages}
+        </span>
+        <button
+          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
+          disabled={page === totalPages}
+        >
+          Next ➡️
+        </button>
+      </div>
+
       <h3>Add New Item</h3>
       <form onSubmit={handleSubmit}>
         <input
@@ -373,6 +499,33 @@ const AdminDashboard = () => {
         />
         <button type="submit">Add Item</button>
       </form>
+
+      <style>
+        {`
+          @media (max-width: 600px) {
+            input, select, button {
+              width: 100%;
+              margin-bottom: 8px;
+            }
+            form, div[style*="marginBottom"] {
+              display: flex;
+              flex-direction: column;
+              gap: 10px;
+            }
+            table {
+              display: block;
+              overflow-x: auto;
+              white-space: nowrap;
+            }
+            .pagination {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              gap: 8px;
+            }
+          }
+        `}
+      </style>
     </div>
   );
 };
