@@ -25,7 +25,7 @@ app.use(
   cors({
     origin: [
       "http://localhost:5173",
-      "https://inverntory-management-system-pks4.onrender.com",
+      "https://inventory-management-system-1f6c.onrender.com",
     ],
     credentials: true,
   })
