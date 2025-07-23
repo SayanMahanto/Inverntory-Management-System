@@ -26,6 +26,7 @@ app.use(
     origin: [
       "http://localhost:5173",
       "https://inventory-management-system-1f6c.onrender.com",
+      "https://inventory-management-system-theta-one.vercel.app",
     ],
     credentials: true,
   })
