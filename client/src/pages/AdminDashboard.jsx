@@ -57,7 +57,7 @@ const AdminDashboard = () => {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/items?${queryParams}`,
+        `${import.meta.env.VITE_API_BASE_URL}/items?${queryParams}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
